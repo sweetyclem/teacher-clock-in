@@ -28,9 +28,9 @@
           </div>
         </nav>
     <div class="container">
-      <% if flash[:notice] %>
-        <div class="notice alert alert-primary"><%= flash[:notice] %></div>
-      <% end %>
+      <%- flash.each do |name, msg| -%>
+        <%= content_tag :div, msg, :class => "alert alert-primary" if msg.is_a?(String) %>
+      <%- end -%>
       <%= yield %>
     </div>
   </body>
