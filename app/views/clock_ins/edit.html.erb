@@ -1,0 +1,35 @@
+<div class="container">
+  
+  <h2>Edit Clock In</h2>
+  
+  <%= form_for @clock_in, :defaults => {:input_html => { :class => 'form-control'}} do |f| %>
+  <% if @clock_in.errors.any? %>
+  <div id="error_explanation">
+    <h2>
+      <%= I18n.t("errors.messages.not_saved",
+      count: @clock_in.errors.count,
+      resource: @clock_in.class.model_name.human.downcase)
+      %>
+    </h2>
+    <ul>
+      <% @clock_in.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+  <div class="field form-group">
+    <%= f.label :start %><br />
+    <%= f.datetime_select(:start) %>
+  </div>
+  
+  <div class="field form-group">
+    <%= f.label :end %><br />
+    <%= f.datetime_select(:end) %>
+  </div>
+  
+  <div class="actions">
+    <%= f.submit "Update" %>
+  </div>
+  <% end %>
+</div>
