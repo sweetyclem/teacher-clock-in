@@ -13,42 +13,56 @@ class ClockInsController < ApplicationController
   
   # POST /clock_ins
   def create
-    @clock_in = ClockIn.new()
-    @clock_in.start = DateTime.current
-    @clock_in.teacher_id = current_teacher.id
+    ClockIn.transaction do
+      @clock_in = ClockIn.new()
+      @clock_in.start = DateTime.current
+      @clock_in.teacher_id = current_teacher.id
 
-    if @clock_in.save
-      current_teacher.current_clock_in = @clock_in
-      current_teacher.save
-      flash[:notice] = 'Clock in was successfully created.'
-      redirect_to :action => "index"
-    else
-      flash[:notice] = 'Error creating the clock in'
-      redirect_to :action => "index"
+      if @clock_in.save
+        current_teacher.last_clock_in_id = @clock_in.id
+        current_teacher.is_clocked_in = true
+        current_teacher.save
+        flash[:notice] = 'Clock in was successfully created.'
+        redirect_to :action => "index"
+      else
+        flash[:notice] = 'Error creating the clock in'
+        redirect_to :action => "index"
+      end
     end
   end
   
   # PATCH/PUT /clock_ins/1
   def update
-    if !@clock_in.end
-      @clock_in.end = DateTime.current
-      current_teacher.current_clock_in = nil
-      current_teacher.save
-    end
-    if @clock_in.update(clock_in_params)
-      flash[:notice] = 'Clock in was successfully ended.'
-      redirect_to :action => "index"
-    else
-      flash[:notice] = 'Error ending the clock in'
-      redirect_to :action => "index"
+    ClockIn.transaction do    
+      if current_teacher.is_clocked_in
+        @clock_in.end = DateTime.current
+        current_teacher.is_clocked_in = false
+        current_teacher.save
+      end
+      if @clock_in.update(clock_in_params)
+        flash[:notice] = 'Clock in was successfully ended.'
+        redirect_to :action => "index"
+      else
+        flash[:notice] = 'Error ending the clock in'
+        redirect_to :action => "index"
+      end
     end
   end
 
   # DELETE /clock_ins/1
   def destroy
-    @clock_in.destroy
+    ClockIn.transaction do
+      if current_teacher.is_clocked_in
+        current_teacher.is_clocked_in = false
+      end
+      if current_teacher.last_clock_in_id == @clock_in.id
+        current_teacher.last_clock_in_id = nil
+        current_teacher.save
+      end
+      @clock_in.destroy
+    end
     flash[:notice] = 'Clock in was successfully deleted.'
-      redirect_to :action => "index"
+    redirect_to :action => "index"
   end
 
   private

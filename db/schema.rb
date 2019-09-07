@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_07_130539) do
+ActiveRecord::Schema.define(version: 2019_09_07_181113) do
 
   create_table "clock_ins", force: :cascade do |t|
     t.datetime "start"
@@ -28,14 +28,15 @@ ActiveRecord::Schema.define(version: 2019_09_07_130539) do
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.string "name"
-    t.integer "current_clock_in_id"
+    t.integer "last_clock_in_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["current_clock_in_id"], name: "index_teachers_on_current_clock_in_id"
+    t.boolean "is_clocked_in"
     t.index ["email"], name: "index_teachers_on_email", unique: true
+    t.index ["last_clock_in_id"], name: "index_teachers_on_last_clock_in_id"
     t.index ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true
   end
 
   add_foreign_key "clock_ins", "teachers"
-  add_foreign_key "teachers", "clock_ins", column: "current_clock_in_id"
+  add_foreign_key "teachers", "clock_ins", column: "last_clock_in_id"
 end

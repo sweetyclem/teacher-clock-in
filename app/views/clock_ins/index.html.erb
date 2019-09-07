@@ -1,9 +1,9 @@
 <h1>Clock ins</h1>
 
-<% if !current_teacher.current_clock_in %>
+<% if !current_teacher.is_clocked_in %>
   <%= button_to 'Clock In', {:controller => "clock_ins", :action => "create"}, :method=>:post  %>
-  <% else %>
-  <%= button_to 'Clock Out', clock_in_path(current_teacher.current_clock_in), :method => :patch %>
+<% else %>
+  <%= button_to 'Clock Out', clock_in_path(current_teacher.last_clock_in_id), :method => :patch %>
 <% end %>
 
 <table>
