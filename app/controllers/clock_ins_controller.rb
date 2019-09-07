@@ -18,8 +18,8 @@ class ClockInsController < ApplicationController
     @clock_in.teacher_id = current_teacher.id
 
     if @clock_in.save
-      @current_teacher.current_clock_in = @clock_in
-      @current_teacher.save
+      current_teacher.current_clock_in = @clock_in
+      current_teacher.save
       flash[:notice] = 'Clock in was successfully created.'
       redirect_to :action => "index"
     else
@@ -32,8 +32,8 @@ class ClockInsController < ApplicationController
   def update
     if !@clock_in.end
       @clock_in.end = DateTime.current
-      @current_teacher.current_clock_in = nil
-      @current_teacher.save
+      current_teacher.current_clock_in = nil
+      current_teacher.save
     end
     if @clock_in.update(clock_in_params)
       flash[:notice] = 'Clock in was successfully ended.'

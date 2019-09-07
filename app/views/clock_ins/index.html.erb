@@ -22,7 +22,7 @@
         <td><%= clock_in.start %></td>
         <td><%= clock_in.end %></td>
         <td><%= link_to 'Edit', edit_clock_in_path(clock_in) %></td>
-        <td><%= link_to 'Delete',  clock_in_path(clock_in), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Delete',  clock_in_path(clock_in), method: :delete, data: {confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
