@@ -1,29 +1,37 @@
-<h1>Clock ins</h1>
-
-<% if !current_teacher.is_clocked_in %>
-  <%= button_to 'Clock In', {:controller => "clock_ins", :action => "create"}, :method=>:post  %>
-<% else %>
-  <%= button_to 'Clock Out', clock_in_path(current_teacher.last_clock_in_id), :method => :patch %>
-<% end %>
-
-<table>
-  <thead>
-    <tr>
-      <th>Start</th>
-      <th>End</th>
-      <th>Teacher</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @clock_ins.each do |clock_in| %>
-      <tr>
-        <td><%= clock_in.start %></td>
-        <td><%= clock_in.end %></td>
-        <td><%= link_to 'Edit', edit_clock_in_path(clock_in) %></td>
-        <td><%= link_to 'Delete',  clock_in_path(clock_in), method: :delete, data: {confirm: 'Are you sure?' } %></td>
-      </tr>
+<div class="row mt-3 mb-3">
+  <div class="col-lg-12 d-flex">
+    <h1 class="flex-grow-1">Clock ins</h1>
+    
+    <% if !current_teacher.is_clocked_in %>
+    <%= button_to 'Clock In', {:controller => "clock_ins", :action => "create"}, :method =>:post, :class => 'btn btn-info float-right' %>
+    <% else %>
+    <%= button_to 'Clock Out', clock_in_path(current_teacher.last_clock_in_id), :method => :patch, :class => 'btn btn-info float-right' %>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Start</th>
+            <th>End</th>
+            <th>Teacher</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @clock_ins.each do |clock_in| %>
+            <tr>
+              <td><%= clock_in.start %></td>
+              <td><%= clock_in.end %></td>
+              <td><%= link_to 'Edit', edit_clock_in_path(clock_in) %></td>
+              <td><%= link_to 'Delete',  clock_in_path(clock_in), method: :delete, data: {confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+</div>
