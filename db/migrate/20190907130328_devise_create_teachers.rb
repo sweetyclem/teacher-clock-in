@@ -15,7 +15,6 @@ class DeviseCreateTeachers < ActiveRecord::Migration[6.0]
       t.datetime :remember_created_at
       
       t.string :name
-      t.references :current_clock_in, foreign_key: {to_table: :clock_ins}
 
       ## Trackable
       # t.integer  :sign_in_count, default: 0, null: false

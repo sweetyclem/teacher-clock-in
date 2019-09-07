@@ -28,15 +28,14 @@ ActiveRecord::Schema.define(version: 2019_09_07_181113) do
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.string "name"
-    t.integer "last_clock_in_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "is_clocked_in"
+    t.integer "last_clock_in_id"
     t.index ["email"], name: "index_teachers_on_email", unique: true
     t.index ["last_clock_in_id"], name: "index_teachers_on_last_clock_in_id"
     t.index ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true
   end
 
   add_foreign_key "clock_ins", "teachers"
-  add_foreign_key "teachers", "clock_ins", column: "last_clock_in_id"
 end
