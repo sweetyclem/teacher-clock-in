@@ -4,8 +4,26 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+teacherOne:
+  name: 'Teacher 1'
+  email: 'teacher1@clems.dev'
+  encrypted_password: <%= Teacher.new.send(:password_digest, 'password1') %>
+  is_clocked_in: false
+
+teacherTwo:
+  name: 'Teacher 2'
+  email: 'teacher2@clems.dev'
+  encrypted_password: <%= Teacher.new.send(:password_digest, 'password1') %>
+  is_clocked_in: false
+
+teacherThree:
+  name: 'Teacher 3'
+  email: 'teacher3@clems.dev'
+  encrypted_password: <%= Teacher.new.send(:password_digest, 'password1') %>
+  is_clocked_in: true
+
+teacherFour:
+  name: 'Teacher 4'
+  email: 'teacher4@clems.dev'
+  encrypted_password: <%= Teacher.new.send(:password_digest, 'password1') %>
+  is_clocked_in: true
