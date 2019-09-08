@@ -8,7 +8,7 @@ This application is a clock in system.
 
 * Database
 
-  Test and developmenr: Sqlite3
+  Test and development: Sqlite3
   
   Production: Postgresql
 
