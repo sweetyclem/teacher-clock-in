@@ -1,5 +1,6 @@
 class ClockInsController < ApplicationController
-  before_action :set_clock_in, only: [:edit, :update, :destroy]
+  before_action :set_clock_in, only: [:edit, :update, :destroy, :end]
+  before_action :authenticate_teacher!
 
   # GET /clock_ins
   def index
@@ -33,14 +34,21 @@ class ClockInsController < ApplicationController
     redirect_to :action => "index"
   end
   
+  # POST /end
+  def end
+    ClockIn.transaction do
+      new_end = DateTime.current
+      current_teacher.is_clocked_in = false
+      current_teacher.save
+      params[:clock_in] = { id: @clock_in.id, end: new_end }
+      update
+    end
+  end
+
   # PATCH/PUT /clock_ins/1
   def update
-    ClockIn.transaction do    
-      if current_teacher.is_clocked_in
-        @clock_in.end = DateTime.current
-        current_teacher.is_clocked_in = false
-        current_teacher.save
-      end
+    ClockIn.transaction do
+      puts clock_in_params.to_s
       if @clock_in.update(clock_in_params)
         flash[:notice] = 'Clock in was successfully ended.'
         redirect_to :action => "index"
