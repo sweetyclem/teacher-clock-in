@@ -14,21 +14,23 @@ class ClockInsController < ApplicationController
   # POST /clock_ins
   def create
     ClockIn.transaction do
-      @clock_in = ClockIn.new()
-      @clock_in.start = DateTime.current
-      @clock_in.teacher_id = current_teacher.id
-
-      if @clock_in.save
-        current_teacher.last_clock_in_id = @clock_in.id
-        current_teacher.is_clocked_in = true
-        current_teacher.save
-        flash[:notice] = 'Clock in was successfully created.'
-        redirect_to :action => "index"
-      else
-        flash[:notice] = 'Error creating the clock in'
-        redirect_to :action => "index"
+      if !current_teacher.is_clocked_in
+        @clock_in = ClockIn.new()
+        @clock_in.start = DateTime.current
+        @clock_in.teacher_id = current_teacher.id
+        
+        if @clock_in.save
+          current_teacher.last_clock_in_id = @clock_in.id
+          current_teacher.is_clocked_in = true
+          current_teacher.save
+          flash[:notice] = 'Clock in was successfully created.'
+          redirect_to :action => "index"
+          return
+        end
       end
     end
+    flash[:notice] = 'Error creating the clock in'
+    redirect_to :action => "index"
   end
   
   # PATCH/PUT /clock_ins/1
