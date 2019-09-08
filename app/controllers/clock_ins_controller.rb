@@ -5,7 +5,7 @@ class ClockInsController < ApplicationController
 
   # GET /clock_ins
   def index
-    @clock_ins = ClockIn.all
+    @clock_ins = ClockIn.all.order(created_at: :desc)
     @current_teacher = current_teacher
   end
 
