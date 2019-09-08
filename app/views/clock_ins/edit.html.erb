@@ -23,10 +23,12 @@
     <%= f.datetime_select(:start) %>
   </div>
   
-  <div class="field form-group">
-    <%= f.label :end %><br />
-    <%= f.datetime_select(:end) %>
-  </div>
+  <% if @clock_in.end %>
+    <div class="field form-group">
+      <%= f.label :end %><br />
+      <%= f.datetime_select(:end) %>
+    </div>
+  <% end %>
   
   <div class="actions">
     <%= f.submit "Update" %>
