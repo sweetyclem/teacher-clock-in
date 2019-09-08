@@ -1,6 +1,7 @@
 class ClockInsController < ApplicationController
   before_action :set_clock_in, only: [:edit, :update, :destroy, :end]
   before_action :authenticate_teacher!
+  before_action :require_permission, only: [:edit, :update, :destroy, :end]
 
   # GET /clock_ins
   def index
@@ -25,12 +26,13 @@ class ClockInsController < ApplicationController
           current_teacher.is_clocked_in = true
           current_teacher.save
           flash[:notice] = 'Clock in was successfully created.'
-          redirect_to :action => "index"
-          return
+        else
+          flash[:notice] = 'Error creating the clock in.'
         end
+      else
+        flash[:notice] = 'Error creating the clock in.'
       end
     end
-    flash[:notice] = 'Error creating the clock in'
     redirect_to :action => "index"
   end
   
@@ -48,15 +50,13 @@ class ClockInsController < ApplicationController
   # PATCH/PUT /clock_ins/1
   def update
     ClockIn.transaction do
-      puts clock_in_params.to_s
       if @clock_in.update(clock_in_params)
         flash[:notice] = 'Clock in was successfully ended.'
-        redirect_to :action => "index"
       else
-        flash[:notice] = 'Error ending the clock in'
-        redirect_to :action => "index"
+        flash[:notice] = 'Error ending the clock in.'
       end
     end
+    redirect_to :action => "index"
   end
 
   # DELETE /clock_ins/1
@@ -69,9 +69,12 @@ class ClockInsController < ApplicationController
         current_teacher.last_clock_in_id = nil
         current_teacher.save
       end
-      @clock_in.destroy
+      if @clock_in.destroy
+        flash[:notice] = 'Clock in was successfully deleted.'
+      else
+        flash[:notice] = 'Error ending the clock in.'
+      end
     end
-    flash[:notice] = 'Clock in was successfully deleted.'
     redirect_to :action => "index"
   end
 
@@ -84,5 +87,12 @@ class ClockInsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def clock_in_params
       params.fetch(:clock_in, {}).permit(:start, :end)
+    end
+
+    def require_permission
+      if current_teacher != ClockIn.find(params[:id]).teacher
+        flash[:notice] = 'Unpermitted action.'
+        redirect_to root_path
+      end
     end
 end
