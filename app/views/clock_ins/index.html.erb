@@ -24,8 +24,8 @@
         <tbody>
           <% @clock_ins.each do |clock_in| %>
             <tr>
-              <td><%= clock_in.start %></td>
-              <td><%= clock_in.end %></td>
+              <td><%= I18n.l(clock_in.start, format: :long) %></td>
+              <td><%= I18n.l(clock_in.end, format: :long) if clock_in.end %></td>
               <td><%= link_to 'Edit', edit_clock_in_path(clock_in) %><br/>
               <%= link_to 'Delete',  clock_in_path(clock_in), method: :delete, data: {confirm: 'Are you sure?' } %></td>
             </tr>
