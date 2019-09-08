@@ -21,6 +21,7 @@ gem 'devise'
 gem 'jquery-rails'
 gem 'bootstrap', '~> 4'
 gem 'pg'
+gem 'data-confirm-modal'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
