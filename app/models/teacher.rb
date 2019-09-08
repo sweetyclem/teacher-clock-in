@@ -5,4 +5,5 @@ class Teacher < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :clock_ins, dependent: :destroy
   has_one :last_clock_in, :class_name => "ClockIn"
+  validates :name, presence: true
 end
